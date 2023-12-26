@@ -21,21 +21,24 @@ class Item:
         self.quantity = quantity
         Item.all.append(self)
 
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
+
+    def __str__(self):
+        return self.__name
+
     @property
     def name(self):
         return self.__name
 
     @name.setter
-    def name(self, add_name: str):
-        if len(add_name) <= 10:
-            self.__name = add_name
-        else:
-            self.__name = add_name[0:10]
+    def name(self, new_name):
+        self.__name = new_name[:10]
 
     @classmethod
     def instantiate_from_csv(cls, path):
         cls.all = []
-        with open(path,encoding='cp1251') as csvfile:
+        with open(path, encoding='cp1251') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 cls(row['name'], row['price'], row['quantity'])
